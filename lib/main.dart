@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tt/sale.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,8 +30,8 @@ class MyApp extends StatelessWidget {
         }
       }
     }
-    
-    setBarStatus(true);
+
+    setBarStatus(false);
     return MaterialApp(
       title: 'Startup Name Generator',
       theme: ThemeData(
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: "相册"),
+      // home: MyHomePage(title: "相册"),
+      home: SalePage(),
     );
   }
 }
@@ -163,7 +165,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -188,20 +189,20 @@ class _MyHomePageState extends State<MyHomePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-            title: Text("无"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("好的", style: TextStyle(color: Colors.blueGrey)),
-                onPressed: () {},
-              ),
-              FlatButton(
-                child: Text("不了", style: TextStyle(color: Colors.blueGrey)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
+        title: Text("无"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("好的", style: TextStyle(color: Colors.blueGrey)),
+            onPressed: () {},
           ),
+          FlatButton(
+            child: Text("不了", style: TextStyle(color: Colors.blueGrey)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
     );
   }
 }
