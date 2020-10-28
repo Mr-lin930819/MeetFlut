@@ -1,74 +1,55 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tt/time_bar.dart';
 
-class SalePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    var state = _SaleState();
-    state.tickTime();
-    return state;
-  }
-}
-
-class _SaleState extends State<SalePage> {
-  String _nowTime;
+class SalePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Color.fromARGB(255, 0x0a, 0x1b, 0x44),
       child: Column(
-        children: <Widget>[createTitleBar(), createMain()],
+        children: <Widget>[
+          createTitleBar(),
+          Expanded(
+            child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(flex: 1, child: buildSaleLeft()),
+                  Expanded(flex: 2, child: buildSaleRight())
+                ]),
+          )
+        ],
       ),
     );
   }
-
-  tickTime() {
-    Timer.periodic(
-        Duration(seconds: 1),
-        (timer) => {
-              setState(() {
-                _nowTime = DateTime.now().toLocal().toString();
-              })
-            });
-  }
-
-  Widget createTitleBar() {
-    return Container(
-        height: 60,
-        padding: EdgeInsets.all(10.0),
-        color: Colors.blueGrey,
-        margin: EdgeInsets.only(top: 26),
-        child: Expanded(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Image.asset('images/ic_table_white.png'),
-            Text(
-              "百斯贝测试3",
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
-            Text(
-              "操作员：郭靖",
-              style: pageTextStyle,
-            ),
-            Text(_nowTime, style: pageTextStyle)
-          ],
-        )));
-  }
 }
 
-Widget createMain() {
-  return Expanded(
+Widget createTitleBar() {
+  return Container(
+      constraints: BoxConstraints.expand(height: 60),
+      margin: EdgeInsets.only(top: 26),
+      padding: EdgeInsets.all(10),
+      color: Colors.blueGrey,
       child: Row(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-      Expanded(flex: 1, child: buildSaleLeft()),
-      Expanded(flex: 2, child: buildSaleRight())
-    ],
-  ));
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          Text(
+            "百斯贝测试3",
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          Text(
+            "操作员：郭靖",
+            style: pageTextStyle,
+          ),
+          TimeBar()
+        ],
+      ));
 }
 
 Widget buildSaleRight() {
@@ -80,9 +61,8 @@ Widget buildSaleRight() {
 
 Widget buildSaleLeft() {
   return Container(
-    alignment: Alignment.center,
     decoration: BoxDecoration(border: Border.all(color: Colors.white)),
-    child: Text("左侧", style: pageTextStyle, textAlign: TextAlign.center),
+    child: ListView(children: createSaleLeftList()),
   );
 }
 
@@ -94,18 +74,17 @@ Widget buildImage() {
   );
 }
 
-Container createSaleLeftList() {
-  return Container(
-    width: 100,
-    child: ListView(
-      children: <Widget>[
-        Text(
-          "测试",
-          style: pageTextStyle,
-        )
-      ],
-    ),
-  );
-}
+List<Widget> createSaleLeftList() => ["测试", "测试1", "测试2", "第四项", "第5项"]
+    .map((e) => Align(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            onTap: () => Fluttertoast.showToast(msg: e),
+            child: Text(
+              e,
+              style: pageTextStyle,
+            ),
+          ),
+        ))
+    .toList();
 
 final pageTextStyle = TextStyle(color: Colors.white);
