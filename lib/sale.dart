@@ -40,7 +40,7 @@ Widget createTitleBar() {
             color: Colors.white,
           ),
           Text(
-            "百斯贝测试3",
+            "百斯贝测试",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
           Text(

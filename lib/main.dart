@@ -147,7 +147,7 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -158,7 +158,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -209,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class RandomWords extends StatefulWidget {
   RandomWords({this.title});
-  final String title;
+  final String? title;
   @override
   createState() => new RandomWordsState();
 }
@@ -226,7 +226,7 @@ class RandomWordsState extends State<RandomWords> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Center(
-              child: Text(widget.title,
+              child: Text(widget.title ?? "",
                   style: TextStyle(color: Colors.lightBlue))),
           actions: <Widget>[
             IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),

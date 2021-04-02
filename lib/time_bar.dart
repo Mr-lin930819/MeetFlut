@@ -10,8 +10,8 @@ class TimeBar extends StatefulWidget {
 }
 
 class _TimeBarState extends State<TimeBar> {
-  String _nowTime;
-  Timer timer;
+  String? _nowTime;
+  Timer? timer;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _TimeBarState extends State<TimeBar> {
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    timer?.cancel();
   }
 
   void tickTime() {
