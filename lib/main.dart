@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tt/gen/assets.gen.dart';
 import 'package:tt/sale.dart';
 
 void main() {
@@ -67,10 +68,9 @@ class PhotoPage extends StatelessWidget {
   }
 
   Widget buildImage() {
-    return Image.asset(
-      'images/DSC_0227_1.jpg',
+    return Assets.images.dsc02271.image(
       height: 240.0,
-      fit: BoxFit.cover,
+      fit: BoxFit.cover
     );
   }
 
@@ -191,11 +191,11 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (_) => AlertDialog(
         title: Text("无"),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text("好的", style: TextStyle(color: Colors.blueGrey)),
             onPressed: () {},
           ),
-          FlatButton(
+          TextButton(
             child: Text("不了", style: TextStyle(color: Colors.blueGrey)),
             onPressed: () {
               Navigator.of(context).pop();

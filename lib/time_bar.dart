@@ -2,42 +2,35 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class TimeBar extends StatefulWidget {
+class TimeBar extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => _TimeBarState();
+  Widget build(BuildContext context) => BlocBuilder<TimerBloc, String>(
+        builder: (BuildContext context, time) =>
+            Text(time, style: TextStyle(color: Colors.white)),
+        bloc: TimerBloc(),
+      );
 }
 
-class _TimeBarState extends State<TimeBar> {
-  String? _nowTime;
-  Timer? timer;
+class TimerBloc extends Cubit<String> {
+  Timer? _timer;
 
-  @override
-  void initState() {
-    super.initState();
+  TimerBloc() : super("") {
     tickTime();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(_nowTime ?? "", style: TextStyle(color: Colors.white));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    timer?.cancel();
-  }
-
   void tickTime() {
-    timer = Timer.periodic(
+    _timer = Timer.periodic(
         Duration(seconds: 1),
-        (timer) => {
-              setState(() {
-                _nowTime = DateFormat("yyyy-MM-dd HH:mm:ss")
-                    .format(DateTime.now().toLocal());
-              })
-            });
+        (timer) => emit(DateFormat("yyyy-MM-dd HH:mm:ss")
+            .format(DateTime.now().toLocal())));
+  }
+
+  @override
+  Future<void> close() {
+    _timer?.cancel();
+    return super.close();
   }
 }

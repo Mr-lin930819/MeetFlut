@@ -22,10 +22,14 @@ dependencies:
   intl: ^0.17.0
   fluttertoast: ^8.0.3
   english_words: ^4.0.0
+  flutter_bloc: ^7.0.0
+  animations: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  flutter_gen_runner:
 
 
 # For information on the generic Dart part of this file, see the
@@ -44,8 +48,8 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - images/DSC_0227_1.jpg
-    - images/ic_table_white.png
+    - assets/images/DSC_0227_1.jpg
+    - assets/images/ic_table_white.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
