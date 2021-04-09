@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tt/gen/assets.gen.dart';
 import 'package:tt/time_bar.dart';
@@ -51,46 +52,122 @@ Widget createTitleBar(BuildContext context) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Builder(
-            builder: (innerContext) => IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: Colors.white,
+          Expanded(
+            flex: 1,
+            child: Builder(
+              builder: (innerContext) => IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+                onPressed: () => Scaffold.of(innerContext).openDrawer(),
               ),
-              onPressed: () => Scaffold.of(innerContext).openDrawer(),
             ),
           ),
-          Text.rich(TextSpan(children: [
-            TextSpan(
-              text: "百斯贝测试",
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
-            TextSpan(text: "  "),
-            TextSpan(
-              text: "操作员：郭靖",
-              style: pageTextStyle,
-            ),
-          ])),
-          TimeBar()
+          Expanded(
+            flex: 6,
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "百斯贝测试",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+              Text("  "),
+              Text(
+                "操作员：郭靖",
+                style: pageTextStyle,
+              ),
+              Text("  "),
+              TimeBar()
+            ]),
+          ),
+          Spacer()
         ],
       ));
 }
 
 Widget buildSaleRight() {
-  return Container(
-    alignment: Alignment.center,
-    child: Text("右侧", style: pageTextStyle, textAlign: TextAlign.center),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Expanded(
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.count(
+          crossAxisCount: 6,
+          mainAxisSpacing: 2.0,
+          crossAxisSpacing: 2.0,
+          childAspectRatio: 1.6,
+          children: List.filled(20, 0)
+              .map((e) => Container(
+                    color: sampleItemColor,
+                  ))
+              .toList(),
+        ),
+      )),
+      Container(
+        height: 36,
+        color: sampleItemColor,
+      ),
+      SizedBox(
+        height: 120,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.separated(
+            itemBuilder: (context, index) => Center(
+              child: Container(
+                width: 108,
+                height: 80,
+                decoration: BoxDecoration(
+                    color: sampleItemColor,
+                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+              ),
+            ),
+            separatorBuilder: (context, index) => VerticalDivider(
+              color: Colors.transparent,
+            ),
+            itemCount: 10,
+            scrollDirection: Axis.horizontal,
+          ),
+        ),
+      )
+    ],
   );
 }
 
 Widget buildSaleLeft() {
   return Container(
+    padding: EdgeInsets.all(8.0),
     decoration: BoxDecoration(border: Border.all(color: Colors.white)),
-    child: Center(
-      child: Text(
-        "左侧",
-        style: pageTextStyle,
-      ),
+    child: Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              color: sampleItemColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8.0),
+                  topRight: Radius.circular(8.0))),
+          height: 60.0,
+        ),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+              title: Container(height: 48, color: sampleItemColor),
+              leading: Container(
+                height: 42,
+                width: 42,
+                color: sampleItemColor,
+              ),
+            ),
+            itemCount: 15,
+          ),
+        )),
+        Container(
+          color: sampleItemColor,
+          height: 72.0,
+        )
+      ],
     ),
   );
 }
@@ -115,3 +192,5 @@ List<Widget> createMenuActions() => ["测试", "测试1", "测试2", "第四项"
 final pageTextStyle = TextStyle(color: Colors.white);
 
 final menuTextStyle = TextStyle(color: Colors.grey);
+
+final sampleItemColor = Colors.white.withOpacity(0.3);
