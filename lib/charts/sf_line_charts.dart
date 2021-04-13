@@ -1,17 +1,17 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tt/sale_bloc.dart';
 import 'package:tt/thread_num_response.dart';
 
-class ApmLineChart extends StatelessWidget {
+class SfApmLineChart extends StatelessWidget {
   final ThreadNumBloc threadNumBloc;
   final String? title;
   final double Function(double)? yMapper;
 
-  ApmLineChart(this.threadNumBloc, {this.title, this.yMapper});
+  SfApmLineChart(this.threadNumBloc, {this.title, this.yMapper});
 
   @override
   Widget build(BuildContext context) =>
@@ -35,16 +35,22 @@ class ApmLineChart extends StatelessWidget {
             (chartData) {
               Color color =
                   colors[metricResults.indexOf(chartData) % colors.length];
-              return LineChartBarData(
-                  spots: chartData?.values
-                      ?.map((e) =>
-                          FlSpot(e?[0] as double, (yMapper ?? defaultYMapper).call(double.parse(e?[1] ?? ""))))
-                      .toList(),
-                  colors: [color],
-                  barWidth: 1.0,
-                  belowBarData: BarAreaData(
-                      show: true, colors: [color.withOpacity(0.15)]),
-                  dotData: FlDotData(show: false));
+              return AreaSeries<List<dynamic>?, String?>(
+                dataSource: chartData?.values ?? [],
+                animationDuration: 0,
+                xValueMapper: (data, index) {
+                  final value = data?[0] ?? 0;
+                  return (threadNumBloc.timeInterval.inHours > 24
+                          ? DateFormat("MM-dd")
+                          : DateFormat("HH:mm"))
+                      .format(DateTime.fromMillisecondsSinceEpoch(
+                          (value * 1000).toInt()));
+                },
+                borderColor: color,
+                borderWidth: 1,
+                yValueMapper: (data, index) => (yMapper?? defaultYMapper).call(double.parse(data?[1]?.toString() ?? "")),
+                color: color.withOpacity(0.15),
+              );
             },
           ).toList();
           return Column(
@@ -55,7 +61,7 @@ class ApmLineChart extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        this.title ?? "进程数",
+                        title ?? "进程数",
                         textAlign: TextAlign.center,
                         style: _chartTextStyle,
                       ),
@@ -71,35 +77,10 @@ class ApmLineChart extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: LineChart(LineChartData(
-                  lineBarsData: lineBars,
-                  gridData: FlGridData(
-                      verticalInterval: 5, horizontalInterval: 5, show: true),
-                  titlesData: FlTitlesData(
-                      leftTitles: SideTitles(
-                          showTitles: true,
-                          interval: 5,
-                          getTextStyles: (index) =>
-                              TextStyle(color: Colors.white)),
-                      bottomTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 36,
-                          interval: threadNumBloc.step * 50,
-                          getTextStyles: (value) =>
-                              TextStyle(color: Colors.white),
-                          getTitles: (value) =>
-                              (threadNumBloc.timeInterval.inHours > 24
-                                      ? DateFormat("MM-dd")
-                                      : DateFormat("HH:mm"))
-                                  .format(DateTime.fromMillisecondsSinceEpoch(
-                                      (value * 1000).toInt())))),
-                  lineTouchData: LineTouchData(
-                      getTouchedSpotIndicator: (spot, d) => [
-                            TouchedSpotIndicatorData(
-                                FlLine(strokeWidth: 0), FlDotData())
-                          ]),
-                ), swapAnimationDuration: Duration.zero,),
-              ),
+                  child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                series: lineBars,
+              )),
             ],
           );
         },

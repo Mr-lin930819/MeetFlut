@@ -12,6 +12,9 @@ class ThreadNumResponse {
       _$ThreadNumResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ThreadNumResponseToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }
 
 @JsonSerializable()
@@ -26,6 +29,9 @@ class ThreadNumData {
       _$ThreadNumDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ThreadNumDataToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }
 
 @JsonSerializable()
