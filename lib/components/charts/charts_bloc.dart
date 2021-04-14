@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tt/thread_num_response.dart';
+import 'package:intl/intl.dart';
+import 'package:meet_flut/entities/thread_num_response.dart';
 
-class ThreadNumBloc extends BlocBase<ThreadNumData> {
+import '../../entities/thread_num_response.dart';
+
+class ChartsBloc extends BlocBase<ApmChartsData> {
   Timer? _refreshTimer;
   DateTime _timeStart;
   DateTime _timeEnd;
@@ -15,8 +18,8 @@ class ThreadNumBloc extends BlocBase<ThreadNumData> {
     "Authorization": "Basic dmlld2VyOnhIb3d1TklCbUc5cExMQ3hXMTEx"
   }));
 
-  ThreadNumBloc(
-      {ThreadNumData? state,
+  ChartsBloc(
+      {ApmChartsData? state,
       DateTime? timeStart,
       DateTime? timeEnd,
       required String baseUrl,
@@ -26,7 +29,7 @@ class ThreadNumBloc extends BlocBase<ThreadNumData> {
             timeStart ?? DateTime.now().subtract(Duration(hours: 6)),
         this._baseUrl = baseUrl,
         this._combineBaseUrl = combineBaseUrl,
-        super(state ?? ThreadNumData()) {
+        super(state ?? ApmChartsData()) {
     this._step = timeInterval.inHours * 12;
     refresh();
     _refreshTimer = Timer.periodic(Duration(seconds: 10), (timer) => refresh());
@@ -36,8 +39,13 @@ class ThreadNumBloc extends BlocBase<ThreadNumData> {
 
   Duration get timeInterval => _timeEnd.difference(_timeStart);
 
+  String formatDateTime(double secondsSinceEpoch) =>
+      (timeInterval.inHours > 24 ? DateFormat("MM-dd") : DateFormat("HH:mm"))
+          .format(DateTime.fromMillisecondsSinceEpoch(
+              (secondsSinceEpoch * 1000).toInt()));
+
   void refresh() async {
-    emit(ThreadNumData()
+    emit(ApmChartsData()
       ..loading = true
       ..resultType = state.resultType
       ..result = state.result);
@@ -54,17 +62,19 @@ class ThreadNumBloc extends BlocBase<ThreadNumData> {
     }
     try {
       final results = await Future.wait(responses);
-      ThreadNumResponse result = results
-          .map((e) => ThreadNumResponse.fromJson(e.data))
-          .fold(ThreadNumResponse()..data = (ThreadNumData()..loading = false..result = []),
-              (previousValue, element) {
+      ChartsResponse result =
+          results.map((e) => ChartsResponse.fromJson(e.data)).fold(
+              ChartsResponse()
+                ..data = (ApmChartsData()
+                  ..loading = false
+                  ..result = []), (previousValue, element) {
         previousValue.status = element.status;
         previousValue.data?..result?.addAll(element.data?.result ?? []);
         return previousValue;
       });
-      emit(result.data ?? ThreadNumData());
+      emit(result.data ?? ApmChartsData());
     } on DioError {
-      emit(ThreadNumData()
+      emit(ApmChartsData()
         ..loading = false
         ..resultType = state.resultType
         ..result = state.result);

@@ -6,22 +6,22 @@ part of 'thread_num_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ThreadNumResponse _$ThreadNumResponseFromJson(Map<String, dynamic> json) {
-  return ThreadNumResponse()
+ChartsResponse _$ThreadNumResponseFromJson(Map<String, dynamic> json) {
+  return ChartsResponse()
     ..status = json['status'] as String?
     ..data = json['data'] == null
         ? null
-        : ThreadNumData.fromJson(json['data'] as Map<String, dynamic>);
+        : ApmChartsData.fromJson(json['data'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$ThreadNumResponseToJson(ThreadNumResponse instance) =>
+Map<String, dynamic> _$ThreadNumResponseToJson(ChartsResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'data': instance.data,
     };
 
-ThreadNumData _$ThreadNumDataFromJson(Map<String, dynamic> json) {
-  return ThreadNumData()
+ApmChartsData _$ThreadNumDataFromJson(Map<String, dynamic> json) {
+  return ApmChartsData()
     ..resultType = json['resultType'] as String?
     ..result = (json['result'] as List<dynamic>?)
         ?.map((e) =>
@@ -29,7 +29,7 @@ ThreadNumData _$ThreadNumDataFromJson(Map<String, dynamic> json) {
         .toList();
 }
 
-Map<String, dynamic> _$ThreadNumDataToJson(ThreadNumData instance) =>
+Map<String, dynamic> _$ThreadNumDataToJson(ApmChartsData instance) =>
     <String, dynamic>{
       'resultType': instance.resultType,
       'result': instance.result,

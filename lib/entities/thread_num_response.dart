@@ -3,12 +3,12 @@ import 'package:json_annotation/json_annotation.dart';
 part 'thread_num_response.g.dart';
 
 @JsonSerializable()
-class ThreadNumResponse {
-  ThreadNumResponse();
+class ChartsResponse {
+  ChartsResponse();
   String? status;
-  ThreadNumData? data;
+  ApmChartsData? data;
 
-  factory ThreadNumResponse.fromJson(Map<String, dynamic> json) =>
+  factory ChartsResponse.fromJson(Map<String, dynamic> json) =>
       _$ThreadNumResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ThreadNumResponseToJson(this);
@@ -18,14 +18,14 @@ class ThreadNumResponse {
 }
 
 @JsonSerializable()
-class ThreadNumData {
-  ThreadNumData();
+class ApmChartsData {
+  ApmChartsData();
   @JsonKey(ignore: true)
   bool loading = false;
   String? resultType;
   List<MetricResult?>? result;
 
-  factory ThreadNumData.fromJson(Map<String, dynamic> json) =>
+  factory ApmChartsData.fromJson(Map<String, dynamic> json) =>
       _$ThreadNumDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ThreadNumDataToJson(this);

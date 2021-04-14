@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tt/gen/assets.gen.dart';
-import 'package:tt/sale.dart';
+
+import 'gen/assets.gen.dart';
+import 'sale.dart';
+import 'package:meet_flut/charts_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,7 +50,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: MyHomePage(title: "相册"),
-      home: SalePage(),
+      home: PageView(
+        children: [
+          ChartsPage(),
+          SalePage()
+        ],
+      ),
     );
   }
 }
