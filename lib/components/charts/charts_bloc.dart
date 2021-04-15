@@ -32,7 +32,7 @@ class ChartsBloc extends BlocBase<ApmChartsData> {
         super(state ?? ApmChartsData()) {
     this._step = timeInterval.inHours * 12;
     refresh();
-    _refreshTimer = Timer.periodic(Duration(seconds: 10), (timer) => refresh());
+    _refreshTimer = Timer.periodic(Duration(seconds: 100), (timer) => refresh());
   }
 
   int get step => _step;

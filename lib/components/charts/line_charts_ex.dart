@@ -6,31 +6,45 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 extension ApmLineChartEx on ApmLineChart {
   static Widget useSfChart(ChartsBloc chartsBloc,
-      {String? title, YMapper? yMapper}) {
+      {String? title, YMapper? yMapper, bool showLegend = false}) {
     return ApmLineChart(chartsBloc, title: title, yMapper: yMapper,
-        childChartBuilder: (colors, metricResults, yMapper, chartsBloc) {
+        childChartBuilder:
+            (context, colors, metricResults, yMapper, chartsBloc) {
       final lineBars = metricResults.map(
         (chartData) {
           Color color =
               colors[metricResults.indexOf(chartData) % colors.length];
           return AreaSeries<List<dynamic>?, String?>(
+            name: chartData?.metric?.node ?? "",
             dataSource: chartData?.values ?? [],
             animationDuration: 0,
+            enableTooltip: true,
             xValueMapper: (data, index) {
               final value = data?[0] ?? 0;
               return chartsBloc.formatDateTime(value);
             },
             borderColor: color,
             borderWidth: 1,
+            isVisibleInLegend: true,
             yValueMapper: (data, index) =>
                 yMapper(double.parse(data?[1]?.toString() ?? "")),
             color: color.withOpacity(0.15),
+            legendIconType: LegendIconType.horizontalLine,
           );
         },
       ).toList();
       return SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
+        primaryXAxis: CategoryAxis(
+            labelPlacement: LabelPlacement.onTicks,
+            edgeLabelPlacement: EdgeLabelPlacement.shift),
         series: lineBars,
+        enableAxisAnimation: false,
+        legend: showLegend
+            ? Legend(
+                isVisible: true,
+                position: LegendPosition.bottom,
+                overflowMode: LegendItemOverflowMode.wrap)
+            : null,
       );
     });
   }

@@ -6,7 +6,7 @@ import 'package:meet_flut/components/charts/charts_bloc.dart';
 import 'package:meet_flut/entities/thread_num_response.dart';
 
 typedef ChartBuilder = Widget Function(
-    List<Color>, List<MetricResult?>, YMapper, ChartsBloc);
+    BuildContext context, List<Color>, List<MetricResult?>, YMapper, ChartsBloc);
 typedef YMapper = double Function(double);
 
 class ApmLineChart extends StatelessWidget {
@@ -24,6 +24,10 @@ class ApmLineChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) => BlocBuilder<ChartsBloc, ApmChartsData?>(
         builder: (context, threadNumData) {
+          final _chartTextStyle = TextStyle(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.grey);
           final colors = [
             Color.fromRGBO(0x05, 0xD5, 0x23, 1),
             Color.fromRGBO(0x12, 0x7D, 0xFF, 1),
@@ -64,7 +68,7 @@ class ApmLineChart extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: childChartBuilder(colors, metricResults,
+                child: childChartBuilder(context, colors, metricResults,
                     yMapper ?? defaultYMapper, chartsBloc),
               ),
             ],
@@ -76,7 +80,7 @@ class ApmLineChart extends StatelessWidget {
   double defaultYMapper(double value) => value;
 }
 
-ChartBuilder _flChildChart = (colors, metricResults, yMapper, chartsBloc) {
+ChartBuilder _flChildChart = (context, colors, metricResults, yMapper, chartsBloc) {
   final lineBars = metricResults.map(
     (chartData) {
       Color color = colors[metricResults.indexOf(chartData) % colors.length];
@@ -92,6 +96,11 @@ ChartBuilder _flChildChart = (colors, metricResults, yMapper, chartsBloc) {
           dotData: FlDotData(show: false));
     },
   ).toList();
+  final chartTextStyle = TextStyle(
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.white
+          : Colors.grey);
+  final textScale = MediaQuery.of(context).textScaleFactor;
   return LineChart(
     LineChartData(
       lineBarsData: lineBars,
@@ -100,15 +109,12 @@ ChartBuilder _flChildChart = (colors, metricResults, yMapper, chartsBloc) {
       titlesData: FlTitlesData(
           leftTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (index) => _chartTextStyle.copyWith(fontSize: 6)),
+              getTextStyles: (index) => chartTextStyle.copyWith(fontSize: 12 / textScale)),
           bottomTitles: SideTitles(
               showTitles: true,
               reservedSize: 36,
               interval: chartsBloc.step * 50,
-              getTextStyles: (value) => _chartTextStyle.copyWith(fontSize: 6),
-              checkToShowTitle: (minValue, maxValue, sideTitles, appliedInterval, value) {
-                return (maxValue - minValue) % appliedInterval == 0;
-              },
+              getTextStyles: (value) => chartTextStyle.copyWith(fontSize: 12 / textScale),
               getTitles: (value) => chartsBloc.formatDateTime(value))),
       lineTouchData: LineTouchData(
           getTouchedSpotIndicator: (spot, d) =>
@@ -117,5 +123,3 @@ ChartBuilder _flChildChart = (colors, metricResults, yMapper, chartsBloc) {
     swapAnimationDuration: Duration.zero,
   );
 };
-
-final _chartTextStyle = TextStyle(color: Colors.white);
