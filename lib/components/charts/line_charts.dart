@@ -2,15 +2,15 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meet_flut/components/charts/charts_bloc.dart';
+import 'package:meet_flut/components/charts/apm_chart_bloc.dart';
 import 'package:meet_flut/entities/thread_num_response.dart';
 
 typedef ChartBuilder = Widget Function(
-    BuildContext context, List<Color>, List<MetricResult?>, YMapper, ChartsBloc);
+    BuildContext context, List<Color>, List<MetricResult?>, YMapper, ApmChartBloc);
 typedef YMapper = double Function(double);
 
 class ApmLineChart extends StatelessWidget {
-  final ChartsBloc chartsBloc;
+  final ApmChartBloc chartsBloc;
   final String? title;
   final YMapper? yMapper;
   final ChartBuilder childChartBuilder;
@@ -22,8 +22,8 @@ class ApmLineChart extends StatelessWidget {
       : this.childChartBuilder = _flChildChart;
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<ChartsBloc, ApmChartsData?>(
-        builder: (context, threadNumData) {
+  Widget build(BuildContext context) => BlocBuilder<ApmChartBloc, ApmChartState>(
+        builder: (context, apmChartState) {
           final _chartTextStyle = TextStyle(
               color: Theme.of(context).brightness == Brightness.dark
                   ? Colors.white
@@ -41,7 +41,7 @@ class ApmLineChart extends StatelessWidget {
             Color.fromRGBO(248, 177, 149, 1),
             Color.fromRGBO(116, 180, 155, 1),
           ];
-          final metricResults = threadNumData?.result ?? [];
+          final metricResults = apmChartState.chartsData?.result ?? [];
           return Column(
             children: [
               Padding(
@@ -59,7 +59,7 @@ class ApmLineChart extends StatelessWidget {
                       width: 12,
                       height: 12,
                       child: Visibility(
-                          visible: threadNumData?.loading == true,
+                          visible: apmChartState is ApmChartLoading,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                           )),

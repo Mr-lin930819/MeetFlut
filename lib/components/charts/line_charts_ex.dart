@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:meet_flut/components/charts/charts_bloc.dart';
+import 'package:meet_flut/components/charts/apm_chart_bloc.dart';
 import 'package:meet_flut/components/charts/line_charts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 extension ApmLineChartEx on ApmLineChart {
-  static Widget useSfChart(ChartsBloc chartsBloc,
+  static Widget useSfChart(ApmChartBloc chartsBloc,
       {String? title, YMapper? yMapper, bool showLegend = false}) {
     return ApmLineChart(chartsBloc, title: title, yMapper: yMapper,
         childChartBuilder:
