@@ -35,8 +35,8 @@ class ApmChartBloc extends Bloc<ApmChartEvent, ApmChartState> {
         super(ApmChartInitial()) {
     this._step = timeInterval.inHours * 12;
     add(ApmChartRefresh());
-    _refreshTimer =
-        Timer.periodic(Duration(seconds: 100), (timer) => this.add(ApmChartRefresh()));
+    _refreshTimer = Timer.periodic(
+        Duration(seconds: 100), (timer) => this.add(ApmChartRefresh()));
   }
 
   int get step => _step;

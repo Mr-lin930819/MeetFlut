@@ -1,4 +1,4 @@
-package com.example.tt
+package com.example.meet_flut
 
 import io.flutter.embedding.android.FlutterActivity
 
