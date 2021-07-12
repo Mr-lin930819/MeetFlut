@@ -50,8 +50,8 @@ class MyApp extends StatelessWidget {
       // home: MyHomePage(title: "相册"),
       home: PageView(
         children: [
-          ChartsPage(),
-          SalePage()
+          // ChartsPage(),
+          SalePage(),
         ],
       ),
     );
