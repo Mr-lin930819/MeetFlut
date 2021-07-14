@@ -9,9 +9,9 @@ class ChartsResponse {
   ApmChartsData? data;
 
   factory ChartsResponse.fromJson(Map<String, dynamic> json) =>
-      _$ThreadNumResponseFromJson(json);
+      _$ChartsResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ThreadNumResponseToJson(this);
+  Map<String, dynamic> toJson() => _$ChartsResponseToJson(this);
 
   @override
   String toString() => toJson().toString();
@@ -26,9 +26,9 @@ class ApmChartsData {
   List<MetricResult?>? result;
 
   factory ApmChartsData.fromJson(Map<String, dynamic> json) =>
-      _$ThreadNumDataFromJson(json);
+      _$ApmChartsDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ThreadNumDataToJson(this);
+  Map<String, dynamic> toJson() => _$ApmChartsDataToJson(this);
 
   @override
   String toString() => toJson().toString();

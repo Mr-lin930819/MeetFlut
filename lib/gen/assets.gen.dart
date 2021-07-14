@@ -10,6 +10,9 @@ class $AssetsImagesGen {
 
   AssetGenImage get dsc02271 =>
       const AssetGenImage('assets/images/DSC_0227_1.jpg');
+  AssetGenImage get guide1 => const AssetGenImage('assets/images/guide1.jpeg');
+  AssetGenImage get guide2 => const AssetGenImage('assets/images/guide2.jpeg');
+  AssetGenImage get guide3 => const AssetGenImage('assets/images/guide3.jpeg');
   AssetGenImage get icTableWhite =>
       const AssetGenImage('assets/images/ic_table_white.png');
 }
@@ -21,10 +24,7 @@ class Assets {
 }
 
 class AssetGenImage extends AssetImage {
-  const AssetGenImage(String assetName)
-      : _assetName = assetName,
-        super(assetName);
-  final String _assetName;
+  const AssetGenImage(String assetName) : super(assetName);
 
   Image image({
     Key? key,
@@ -69,5 +69,5 @@ class AssetGenImage extends AssetImage {
     );
   }
 
-  String get path => _assetName;
+  String get path => assetName;
 }

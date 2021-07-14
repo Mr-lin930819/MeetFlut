@@ -6,7 +6,7 @@ part of 'thread_num_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ChartsResponse _$ThreadNumResponseFromJson(Map<String, dynamic> json) {
+ChartsResponse _$ChartsResponseFromJson(Map<String, dynamic> json) {
   return ChartsResponse()
     ..status = json['status'] as String?
     ..data = json['data'] == null
@@ -14,13 +14,13 @@ ChartsResponse _$ThreadNumResponseFromJson(Map<String, dynamic> json) {
         : ApmChartsData.fromJson(json['data'] as Map<String, dynamic>);
 }
 
-Map<String, dynamic> _$ThreadNumResponseToJson(ChartsResponse instance) =>
+Map<String, dynamic> _$ChartsResponseToJson(ChartsResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'data': instance.data,
     };
 
-ApmChartsData _$ThreadNumDataFromJson(Map<String, dynamic> json) {
+ApmChartsData _$ApmChartsDataFromJson(Map<String, dynamic> json) {
   return ApmChartsData()
     ..resultType = json['resultType'] as String?
     ..result = (json['result'] as List<dynamic>?)
@@ -29,7 +29,7 @@ ApmChartsData _$ThreadNumDataFromJson(Map<String, dynamic> json) {
         .toList();
 }
 
-Map<String, dynamic> _$ThreadNumDataToJson(ApmChartsData instance) =>
+Map<String, dynamic> _$ApmChartsDataToJson(ApmChartsData instance) =>
     <String, dynamic>{
       'resultType': instance.resultType,
       'result': instance.result,
