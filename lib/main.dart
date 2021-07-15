@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meet_flut/pages/code_lab_page.dart';
 import 'package:meet_flut/pages/photo_page.dart';
 import 'package:meet_flut/pages/video_page.dart';
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
             itemBuilder: (context, index) {
               final menu = _menus[index];
               return GestureDetector(
-                onTap: () => _onMenuClick(context, index),
+                onTap: () => _onMenuClick(context, menu.menuTag),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -82,20 +83,23 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  _onMenuClick(BuildContext context, int menuIndex) {
+  _onMenuClick(BuildContext context, int menuTag) {
     final Widget page;
-    switch (menuIndex) {
-      case 0:
+    switch (menuTag) {
+      case _MENU_SALE:
         page = SalePage();
         break;
-      case 1:
+      case _MENU_PHOTO:
         page = PhotoPage();
         break;
-      case 2:
+      case _MENU_VIDEO:
+        page = VideoPage();
+        break;
+      case _MENU_CHARTS:
         page = ChartsPage();
         break;
-      case 3:
-        page = VideoPage();
+      case _MENU_CODE:
+        page = CodeLabPage();
         break;
       default:
         page = SalePage();
@@ -104,16 +108,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
+const int _MENU_SALE = 0;
+const int _MENU_PHOTO = 1;
+const int _MENU_CODE = 2;
+const int _MENU_VIDEO = 3;
+const int _MENU_CHARTS = 4;
+
 List<_Menu> _menus = [
-  _Menu(Icons.shop, "Demo"),
-  _Menu(Icons.photo, "Demo2"),
-  _Menu(Icons.show_chart, "图表"),
-  _Menu(Icons.videocam, "视频")
+  _Menu(Icons.shop, "Demo", _MENU_SALE),
+  _Menu(Icons.photo, "Demo2", _MENU_PHOTO),
+  _Menu(Icons.code, "CodeLab", _MENU_CODE),
+  _Menu(Icons.videocam, "视频", _MENU_VIDEO),
+  _Menu(Icons.show_chart, "图表", _MENU_CHARTS),
 ];
 
 class _Menu {
   IconData icon;
   String name;
+  int menuTag;
 
-  _Menu(this.icon, this.name);
+  _Menu(this.icon, this.name, this.menuTag);
 }
