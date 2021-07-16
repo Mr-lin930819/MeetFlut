@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:meet_flut/di/di.dart';
+import 'package:meet_flut/entry/video/video_first_guide.dart';
+import 'package:meet_flut/entry/video/video_main.dart';
+import 'package:meet_flut/named_routes.dart';
 import 'package:meet_flut/pages/code_lab_page.dart';
 import 'package:meet_flut/pages/photo_page.dart';
 import 'package:meet_flut/pages/video_page.dart';
@@ -9,7 +13,8 @@ import 'package:meet_flut/pages/video_page.dart';
 import 'sale.dart';
 import 'package:meet_flut/charts_page.dart';
 
-void main() {
+void main() async {
+  configureDependencies();
   runApp(MyApp());
   SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
@@ -50,6 +55,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      routes: {
+        NamedRoutes.SALE: (_) => SalePage(),
+        NamedRoutes.PHOTO: (_) => PhotoPage(),
+        NamedRoutes.CHARTS: (_) => ChartsPage(),
+        NamedRoutes.CODE: (_) => CodeLabPage(),
+        NamedRoutes.VIDEO: (_) => VideoPage(),
+        NamedRoutes.VIDEO_FIRST_GUIDE: (_) => VideoFirstGuide(),
+        NamedRoutes.VIDEO_MAIN: (_) => VideoMain(),
+      },
       // home: MyHomePage(title: "相册"),
       home: DecoratedBox(
         decoration: BoxDecoration(color: Theme.of(context).primaryColor),
@@ -60,7 +74,7 @@ class MyApp extends StatelessWidget {
             itemBuilder: (context, index) {
               final menu = _menus[index];
               return GestureDetector(
-                onTap: () => _onMenuClick(context, menu.menuTag),
+                onTap: () => Navigator.pushNamed(context, menu.pageName),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -82,50 +96,20 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
-  _onMenuClick(BuildContext context, int menuTag) {
-    final Widget page;
-    switch (menuTag) {
-      case _MENU_SALE:
-        page = SalePage();
-        break;
-      case _MENU_PHOTO:
-        page = PhotoPage();
-        break;
-      case _MENU_VIDEO:
-        page = VideoPage();
-        break;
-      case _MENU_CHARTS:
-        page = ChartsPage();
-        break;
-      case _MENU_CODE:
-        page = CodeLabPage();
-        break;
-      default:
-        page = SalePage();
-    }
-    Navigator.push(context, MaterialPageRoute(builder: (_) => page));
-  }
 }
 
-const int _MENU_SALE = 0;
-const int _MENU_PHOTO = 1;
-const int _MENU_CODE = 2;
-const int _MENU_VIDEO = 3;
-const int _MENU_CHARTS = 4;
-
 List<_Menu> _menus = [
-  _Menu(Icons.shop, "Demo", _MENU_SALE),
-  _Menu(Icons.photo, "Demo2", _MENU_PHOTO),
-  _Menu(Icons.code, "CodeLab", _MENU_CODE),
-  _Menu(Icons.videocam, "视频", _MENU_VIDEO),
-  _Menu(Icons.show_chart, "图表", _MENU_CHARTS),
+  _Menu(Icons.shop, "Demo", NamedRoutes.SALE),
+  _Menu(Icons.photo, "Demo2", NamedRoutes.PHOTO),
+  _Menu(Icons.code, "CodeLab", NamedRoutes.CODE),
+  _Menu(Icons.videocam, "视频", NamedRoutes.VIDEO),
+  _Menu(Icons.show_chart, "图表", NamedRoutes.CHARTS),
 ];
 
 class _Menu {
   IconData icon;
   String name;
-  int menuTag;
+  String pageName;
 
-  _Menu(this.icon, this.name, this.menuTag);
+  _Menu(this.icon, this.name, this.pageName);
 }

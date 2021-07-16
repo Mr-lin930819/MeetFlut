@@ -28,10 +28,14 @@ dependencies:
   json_serializable: ^4.1.0
   fl_chart: ^0.35.0
   syncfusion_flutter_charts: ^19.1.56
+  shared_preferences: ^2.0.6
+  injectable: ^1.4.1
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  injectable_generator:
   build_runner:
   flutter_gen_runner:
 
