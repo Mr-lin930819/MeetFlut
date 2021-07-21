@@ -98,18 +98,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-List<_Menu> _menus = [
-  _Menu(Icons.shop, "Demo", NamedRoutes.SALE),
-  _Menu(Icons.photo, "Demo2", NamedRoutes.PHOTO),
-  _Menu(Icons.code, "CodeLab", NamedRoutes.CODE),
-  _Menu(Icons.videocam, "视频", NamedRoutes.VIDEO),
-  _Menu(Icons.show_chart, "图表", NamedRoutes.CHARTS),
+List<Menu> _menus = [
+  Menu(Icons.shop, "Demo", NamedRoutes.SALE),
+  Menu(Icons.photo, "Demo2", NamedRoutes.PHOTO),
+  Menu(Icons.code, "CodeLab", NamedRoutes.CODE),
+  Menu(Icons.videocam, "视频", NamedRoutes.VIDEO),
+  Menu(Icons.show_chart, "图表", NamedRoutes.CHARTS),
 ];
 
-class _Menu {
+class Menu {
   IconData icon;
   String name;
   String pageName;
 
-  _Menu(this.icon, this.name, this.pageName);
+  Menu(this.icon, this.name, this.pageName);
 }
