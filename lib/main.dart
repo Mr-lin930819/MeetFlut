@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meet_flut/di/di.dart';
+import 'package:meet_flut/entry/video/video_common_channel.dart';
 import 'package:meet_flut/entry/video/video_first_guide.dart';
 import 'package:meet_flut/entry/video/video_main.dart';
 import 'package:meet_flut/named_routes.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         NamedRoutes.VIDEO: (_) => VideoPage(),
         NamedRoutes.VIDEO_FIRST_GUIDE: (_) => VideoFirstGuide(),
         NamedRoutes.VIDEO_MAIN: (_) => VideoMain(),
+        NamedRoutes.VIDEO_SHOW: (_) => VideoCommonChannel(),
       },
       // home: MyHomePage(title: "相册"),
       home: DecoratedBox(
