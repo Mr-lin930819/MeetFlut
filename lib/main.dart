@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:meet_flut/di/di.dart';
 import 'package:meet_flut/entry/video/video_common_channel.dart';
 import 'package:meet_flut/entry/video/video_first_guide.dart';
@@ -10,6 +11,7 @@ import 'package:meet_flut/named_routes.dart';
 import 'package:meet_flut/pages/code_lab_page.dart';
 import 'package:meet_flut/pages/photo_page.dart';
 import 'package:meet_flut/pages/video_page.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'sale.dart';
 import 'package:meet_flut/charts_page.dart';
@@ -56,6 +58,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      localizationsDelegates: [
+        RefreshLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale("zh"),
+      ],
       routes: {
         NamedRoutes.SALE: (_) => SalePage(),
         NamedRoutes.PHOTO: (_) => PhotoPage(),

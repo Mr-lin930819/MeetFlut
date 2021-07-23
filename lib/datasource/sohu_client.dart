@@ -6,7 +6,7 @@ import 'package:retrofit/http.dart';
 part 'sohu_client.g.dart';
 
 @singleton
-@RestApi(baseUrl: "http://api.tv.sohu.com/v4/")
+@RestApi(baseUrl: "https://api.tv.sohu.com/v4/")
 abstract class SohuClient {
   @factoryMethod
   factory SohuClient(Dio dio) = _SohuClient;

@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'thread_num_response.g.dart';
+part 'apm_charts_data.g.dart';
 
 @JsonSerializable()
 class ChartsResponse {
@@ -38,7 +38,7 @@ class ApmChartsData {
 class MetricResult {
   MetricResult();
   MetricData? metric;
-  List<List<dynamic?>?>? values;
+  List<List<dynamic>?>? values;
 
   factory MetricResult.fromJson(Map<String, dynamic> json) =>
       _$MetricResultFromJson(json);

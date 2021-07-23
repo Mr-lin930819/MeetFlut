@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
-import 'package:meet_flut/entities/thread_num_response.dart';
+import 'package:meet_flut/entities/apm_charts_data.dart';
 import 'package:meta/meta.dart';
 
 part 'apm_chart_event.dart';

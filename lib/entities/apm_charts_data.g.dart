@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'thread_num_response.dart';
+part of 'apm_charts_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
