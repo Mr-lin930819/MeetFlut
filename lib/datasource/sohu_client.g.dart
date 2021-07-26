@@ -8,7 +8,7 @@ part of 'sohu_client.dart';
 
 class _SohuClient implements SohuClient {
   _SohuClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://api.tv.sohu.com/v4/';
+    baseUrl ??= 'https://api.tv.sohu.com/v4/';
   }
 
   final Dio _dio;

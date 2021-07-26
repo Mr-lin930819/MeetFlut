@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:meet_flut/entities/sohu_result.dart';
+import 'package:meet_flut/entry/page/page_state.dart';
 import 'package:meet_flut/entry/video/sohu_channel_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -19,25 +21,8 @@ class VideoCommonChannel extends StatelessWidget {
       ),
       body: BlocBuilder<SohuChannelBloc, SohuChannelState>(
         buildWhen: (prevState, newState) {
-          if (newState is SohuChannelFail) {
-            if (newState.isRefresh) {
-              _refreshController.refreshFailed();
-            } else {
-              _refreshController.loadFailed();
-            }
-            return false;
-          }
-          if (newState is SohuChannelLoadSuccess) {
-            if (newState.noMoreData) {
-              _refreshController.loadNoData();
-            } else {
-              _refreshController.resetNoData();
-            }
-            if (newState.isRefresh) {
-              _refreshController.refreshCompleted();
-            } else {
-              _refreshController.loadComplete();
-            }
+          if (newState is SohuChannelCompleted) {
+            return _refreshController.handlePageState(newState.pageState);
           }
           return true;
         },
@@ -48,21 +33,30 @@ class VideoCommonChannel extends StatelessWidget {
           header: ClassicHeader(),
           onRefresh: () => _channelBloc.add(SohuChannelRefreshEvent()),
           onLoading: () => _channelBloc.add(SohuChannelLoadMoreEvent()),
-          child: _buildChannelsContent(state),
+          child: _buildChannelView(state),
         ),
         bloc: _channelBloc,
       ),
     );
   }
 
-  //构建频道内容
-  Widget _buildChannelsContent(SohuChannelState state) {
+  //频道页界面
+  Widget _buildChannelView(SohuChannelState state) {
     if (state is SohuChannelInitial) {
       return Center(
         child: Text("无数据"),
       );
-    } else if (state is SohuChannelLoadSuccess) {
-      final albumList = state.albumList;
+    } else if (state is SohuChannelCompleted) {
+      return _buildChannelsContent(state.pageState);
+    } else {
+      return Text('');
+    }
+  }
+
+  //构建频道内容
+  Widget _buildChannelsContent(PageCompletedState state) {
+    if (state is PageSuccessState<SohuAlbum>) {
+      final albumList = state.list;
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, childAspectRatio: 3.0 / 4.0),

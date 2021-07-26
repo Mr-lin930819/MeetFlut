@@ -14,6 +14,9 @@ class SohuResult {
       _$SohuResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$SohuResultToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }
 
 @JsonSerializable()
@@ -28,6 +31,9 @@ class SohuData {
   Map<String, dynamic> toJson() => _$SohuDataToJson(this);
 
   SohuData(this.count, this.albumList);
+
+  @override
+  String toString() => toJson().toString();
 }
 
 @JsonSerializable()
@@ -76,4 +82,7 @@ class SohuAlbum {
       _$SohuAlbumFromJson(json);
 
   Map<String, dynamic> toJson() => _$SohuAlbumToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

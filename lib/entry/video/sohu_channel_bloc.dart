@@ -5,7 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meet_flut/datasource/sohu_client.dart';
 import 'package:meet_flut/entities/sohu_result.dart';
+import 'package:meet_flut/entry/page/page_handler.dart';
+import 'package:meet_flut/entry/page/page_state.dart';
 import 'package:meta/meta.dart';
+export 'package:meet_flut/entry/page/page_state.dart' show RefreshControllerEx;
 
 part 'sohu_channel_event.dart';
 
@@ -15,35 +18,21 @@ part 'sohu_channel_state.dart';
 class SohuChannelBloc extends Bloc<SohuChannelEvent, SohuChannelState> {
   static const int _PAGE_SIZE = 12;
   SohuClient _sohuClient;
-  String _lastRefreshChannelId = "";
-  List<SohuAlbum> _cachedAlbumList = [];
-  int _curPage = 1;
 
-  SohuChannelBloc(this._sohuClient) : super(SohuChannelInitial());
+  late PageHandler<SohuAlbum, String> _pager;
+
+  SohuChannelBloc(this._sohuClient) : super(SohuChannelInitial()) {
+    _pager = PageHandler((page, channelId) => _loadAlbumList(page, channelId ?? ""));
+  }
 
   @override
   Stream<SohuChannelState> mapEventToState(
     SohuChannelEvent event,
   ) async* {
     if (event is SohuChannelRefreshEvent) {
-      final albumList = await _loadAlbumList(1, event.channelId);
-      if (albumList != null) {
-        _curPage = 2;
-        _lastRefreshChannelId = event.channelId;
-        _cachedAlbumList = albumList;
-        yield SohuChannelLoadSuccess(albumList);
-      } else {
-        yield SohuChannelFail(true);
-      }
+      yield SohuChannelCompleted(await _pager.refresh(event.channelId));
     } else if (event is SohuChannelLoadMoreEvent) {
-      final albumList = await _loadAlbumList(_curPage, _lastRefreshChannelId);
-      if (albumList != null) {
-        _curPage++;
-        _cachedAlbumList.addAll(albumList);
-        yield SohuChannelLoadSuccess(_cachedAlbumList, isRefresh: false);
-      } else {
-        yield SohuChannelFail(false);
-      }
+      yield SohuChannelCompleted(await _pager.loadMore());
     }
   }
 
