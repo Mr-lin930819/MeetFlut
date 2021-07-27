@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meet_flut/entities/sohu_result.dart';
+import 'package:meet_flut/entities/sohu_album_result.dart';
+import 'package:meet_flut/entities/video_channel.dart';
 import 'package:meet_flut/entry/page/page_state.dart';
 import 'package:meet_flut/entry/video/sohu_channel_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -12,12 +13,15 @@ class VideoCommonChannel extends StatelessWidget {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: true);
   final SohuChannelBloc _channelBloc = GetIt.I.get();
+  final VideoChannel? _videoChannel;
+
+  VideoCommonChannel([this._videoChannel]);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("电视剧"),
+        title: Text(_videoChannel?.title ?? "电视剧"),
       ),
       body: BlocBuilder<SohuChannelBloc, SohuChannelState>(
         buildWhen: (prevState, newState) {
@@ -31,7 +35,8 @@ class VideoCommonChannel extends StatelessWidget {
           enablePullUp: true,
           enablePullDown: true,
           header: ClassicHeader(),
-          onRefresh: () => _channelBloc.add(SohuChannelRefreshEvent()),
+          onRefresh: () => _channelBloc
+              .add(SohuChannelRefreshEvent(_videoChannel?.channelId.toString() ?? "")),
           onLoading: () => _channelBloc.add(SohuChannelLoadMoreEvent()),
           child: _buildChannelView(state),
         ),
@@ -62,29 +67,32 @@ class VideoCommonChannel extends StatelessWidget {
             crossAxisCount: 3, childAspectRatio: 3.0 / 4.0),
         itemBuilder: (_, index) {
           final album = albumList[index];
-          return Stack(
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image(
-                image: CachedNetworkImageProvider(album.verHighPic ?? ""),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+              Expanded(
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Text(
-                      album.tvDesc ?? "",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    Image(
+                      image: CachedNetworkImageProvider(album.verHighPic ?? ""),
                     ),
-                    Text(
-                      album.albumName ?? "",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        album.tvDesc ?? "",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    )
                   ],
                 ),
-              )
+              ),
+              Text(
+                album.albumName ?? "",
+              ),
             ],
           );
         },

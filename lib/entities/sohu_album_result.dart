@@ -1,36 +1,36 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'sohu_result.g.dart';
+part 'sohu_album_result.g.dart';
 
 @JsonSerializable()
-class SohuResult {
+class SohuAlbumResult {
   int status;
   String statusText;
-  SohuData data;
+  SohuAlbumData data;
 
-  SohuResult(this.status, this.statusText, this.data);
+  SohuAlbumResult(this.status, this.statusText, this.data);
 
-  factory SohuResult.fromJson(Map<String, dynamic> json) =>
-      _$SohuResultFromJson(json);
+  factory SohuAlbumResult.fromJson(Map<String, dynamic> json) =>
+      _$SohuAlbumResultFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SohuResultToJson(this);
+  Map<String, dynamic> toJson() => _$SohuAlbumResultToJson(this);
 
   @override
   String toString() => toJson().toString();
 }
 
 @JsonSerializable()
-class SohuData {
+class SohuAlbumData {
   int count;
   @JsonKey(name: "videos")
   List<SohuAlbum> albumList;
 
-  factory SohuData.fromJson(Map<String, dynamic> json) =>
-      _$SohuDataFromJson(json);
+  factory SohuAlbumData.fromJson(Map<String, dynamic> json) =>
+      _$SohuAlbumDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SohuDataToJson(this);
+  Map<String, dynamic> toJson() => _$SohuAlbumDataToJson(this);
 
-  SohuData(this.count, this.albumList);
+  SohuAlbumData(this.count, this.albumList);
 
   @override
   String toString() => toJson().toString();

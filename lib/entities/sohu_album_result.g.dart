@@ -1,28 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sohu_result.dart';
+part of 'sohu_album_result.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SohuResult _$SohuResultFromJson(Map<String, dynamic> json) {
-  return SohuResult(
+SohuAlbumResult _$SohuAlbumResultFromJson(Map<String, dynamic> json) {
+  return SohuAlbumResult(
     json['status'] as int,
     json['statusText'] as String,
-    SohuData.fromJson(json['data'] as Map<String, dynamic>),
+    SohuAlbumData.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$SohuResultToJson(SohuResult instance) =>
+Map<String, dynamic> _$SohuAlbumResultToJson(SohuAlbumResult instance) =>
     <String, dynamic>{
       'status': instance.status,
       'statusText': instance.statusText,
       'data': instance.data,
     };
 
-SohuData _$SohuDataFromJson(Map<String, dynamic> json) {
-  return SohuData(
+SohuAlbumData _$SohuAlbumDataFromJson(Map<String, dynamic> json) {
+  return SohuAlbumData(
     json['count'] as int,
     (json['videos'] as List<dynamic>)
         .map((e) => SohuAlbum.fromJson(e as Map<String, dynamic>))
@@ -30,7 +30,8 @@ SohuData _$SohuDataFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SohuDataToJson(SohuData instance) => <String, dynamic>{
+Map<String, dynamic> _$SohuAlbumDataToJson(SohuAlbumData instance) =>
+    <String, dynamic>{
       'count': instance.count,
       'videos': instance.albumList,
     };

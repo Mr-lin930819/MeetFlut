@@ -16,7 +16,7 @@ class _SohuClient implements SohuClient {
   String? baseUrl;
 
   @override
-  Future<SohuResult> getChannelAlbum(cid, page, pageSize,
+  Future<SohuAlbumResult> getChannelAlbum(cid, page, pageSize,
       [o = 1,
       plat = 6,
       poid = 1,
@@ -39,12 +39,107 @@ class _SohuClient implements SohuClient {
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SohuResult>(
+        _setStreamType<SohuAlbumResult>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options, '/search/channel.json',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = SohuResult.fromJson(_result.data!);
+    final value = SohuAlbumResult.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SohuAlbumDetailResult> getAlbumDetail(albumId,
+      [plat = 6,
+      poid = 1,
+      apiKey = "9854b2afa779e1a6bff1962447a09dbd",
+      sVer = "6.2.0",
+      sysVer = "4.4.2",
+      partner = 47]) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'plat': plat,
+      r'poid': poid,
+      r'api_key': apiKey,
+      r'sver': sVer,
+      r'sysver': sysVer,
+      r'partner': partner
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SohuAlbumDetailResult>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/album/info/$albumId.json',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SohuAlbumDetailResult.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SohuVideoResult> getVideo(albumId, page, pageSize,
+      [order = 0,
+      site = 1,
+      withTrailer = 1,
+      plat = 6,
+      poid = 1,
+      apiKey = "9854b2afa779e1a6bff1962447a09dbd",
+      sVer = "6.2.0",
+      sysVer = "4.4.2",
+      partner = 47]) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'page_size': pageSize,
+      r'order': order,
+      r'site': site,
+      r'with_trailer': withTrailer,
+      r'plat': plat,
+      r'poid': poid,
+      r'api_key': apiKey,
+      r'sver': sVer,
+      r'sysver': sysVer,
+      r'partner': partner
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SohuVideoResult>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/album/videos/$albumId.json',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SohuVideoResult.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SohuVideoUrlResult> getVideoPlayUrl(vid, aid,
+      [site = 1,
+      plat = 6,
+      poid = 1,
+      apiKey = "9854b2afa779e1a6bff1962447a09dbd",
+      sVer = "6.2.0",
+      sysVer = "4.4.2",
+      partner = 47]) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'aid': aid,
+      r'site': site,
+      r'plat': plat,
+      r'poid': poid,
+      r'api_key': apiKey,
+      r'sver': sVer,
+      r'sysver': sysVer,
+      r'partner': partner
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SohuVideoUrlResult>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/video/info/$vid.json',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SohuVideoUrlResult.fromJson(_result.data!);
     return value;
   }
 

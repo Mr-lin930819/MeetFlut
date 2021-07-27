@@ -47,6 +47,8 @@ dependencies:
     sdk: flutter
   # 图片加载
   cached_network_image: ^3.1.0
+  # uuid
+  uuid: 3.0.4
 
 dev_dependencies:
   flutter_test:

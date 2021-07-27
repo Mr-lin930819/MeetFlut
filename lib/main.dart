@@ -44,6 +44,17 @@ class MyApp extends StatelessWidget {
     }
 
     setBarStatus(false);
+    final routes = {
+      NamedRoutes.SALE: (_, {args}) => SalePage(),
+      NamedRoutes.PHOTO: (_, {args}) => PhotoPage(),
+      NamedRoutes.CHARTS: (_, {args}) => ChartsPage(),
+      NamedRoutes.CODE: (_, {args}) => CodeLabPage(),
+      NamedRoutes.VIDEO: (_, {args}) => VideoPage(),
+      NamedRoutes.VIDEO_FIRST_GUIDE: (_, {args}) => VideoFirstGuide(),
+      NamedRoutes.VIDEO_MAIN: (_, {args}) => VideoMain(),
+      NamedRoutes.VIDEO_COMMON_CHANNEL: (_, {args}) =>
+          VideoCommonChannel(args['channel']),
+    };
     return MaterialApp(
       title: 'Startup Name Generator',
       theme: ThemeData(
@@ -65,18 +76,30 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         const Locale("zh"),
       ],
-      routes: {
-        NamedRoutes.SALE: (_) => SalePage(),
-        NamedRoutes.PHOTO: (_) => PhotoPage(),
-        NamedRoutes.CHARTS: (_) => ChartsPage(),
-        NamedRoutes.CODE: (_) => CodeLabPage(),
-        NamedRoutes.VIDEO: (_) => VideoPage(),
-        NamedRoutes.VIDEO_FIRST_GUIDE: (_) => VideoFirstGuide(),
-        NamedRoutes.VIDEO_MAIN: (_) => VideoMain(),
-        NamedRoutes.VIDEO_SHOW: (_) => VideoCommonChannel(),
+      onGenerateRoute: (settings) {
+        // 获取声明的路由页面函数
+        var pageBuilder = routes[settings.name];
+        if (pageBuilder != null) {
+          if (settings.arguments != null) {
+            return MaterialPageRoute(
+                builder: (context) =>
+                    pageBuilder(context, args: settings.arguments));
+          } else {
+            return MaterialPageRoute(
+                builder: (context) => pageBuilder(context));
+          }
+        }
+        return MaterialPageRoute(builder: (context) => _HomePage());
       },
       // home: MyHomePage(title: "相册"),
-      home: DecoratedBox(
+      home: _HomePage(),
+    );
+  }
+}
+
+class _HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(color: Theme.of(context).primaryColor),
         child: GridView.builder(
             gridDelegate:
@@ -104,9 +127,7 @@ class MyApp extends StatelessWidget {
                 ),
               );
             }),
-      ),
-    );
-  }
+      );
 }
 
 List<Menu> _menus = [
@@ -121,6 +142,7 @@ class Menu {
   IconData icon;
   String name;
   String pageName;
+  Map<String, dynamic>? args;
 
-  Menu(this.icon, this.name, this.pageName);
+  Menu(this.icon, this.name, this.pageName, {this.args});
 }

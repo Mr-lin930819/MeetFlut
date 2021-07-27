@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meet_flut/datasource/sohu_client.dart';
-import 'package:meet_flut/entities/sohu_result.dart';
+import 'package:meet_flut/entities/sohu_album_result.dart';
+import 'package:meet_flut/entities/video_channel.dart';
 import 'package:meet_flut/entry/page/page_handler.dart';
 import 'package:meet_flut/entry/page/page_state.dart';
 import 'package:meta/meta.dart';
@@ -22,7 +23,8 @@ class SohuChannelBloc extends Bloc<SohuChannelEvent, SohuChannelState> {
   late PageHandler<SohuAlbum, String> _pager;
 
   SohuChannelBloc(this._sohuClient) : super(SohuChannelInitial()) {
-    _pager = PageHandler((page, channelId) => _loadAlbumList(page, channelId ?? ""));
+    _pager =
+        PageHandler((page, channelId) => _loadAlbumList(page, channelId ?? ""));
   }
 
   @override
@@ -38,7 +40,7 @@ class SohuChannelBloc extends Bloc<SohuChannelEvent, SohuChannelState> {
 
   Future<List<SohuAlbum>?> _loadAlbumList(int page, String channelId) async {
     try {
-      SohuResult result =
+      SohuAlbumResult result =
           await _sohuClient.getChannelAlbum(channelId, page, _PAGE_SIZE);
       return result.data.albumList;
     } on DioError catch (dioError) {
