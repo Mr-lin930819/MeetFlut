@@ -12,25 +12,40 @@ class PageHandler<T, Condition> {
   PageHandler(this.__loadAction);
 
   Future<PageCompletedState> refresh(Condition condition) async {
-    final result = await __loadAction?.call(1, condition);
-    if (result != null) {
-      _curPage = 2;
-      _cachedList = result;
-      _cachedCondition = condition;
-      return PageSuccessState(result);
-    } else {
-      return PageFailState(true);
+    try {
+      final result = await __loadAction?.call(1, condition);
+      if (result != null) {
+        _curPage = 2;
+        _cachedList = result;
+        _cachedCondition = condition;
+        return PageSuccessState(result, noMoreData: result.isEmpty);
+      } else {
+        return PageFailState(true);
+      }
+    } on PageFailException catch (e) {
+      return PageFailState(false, e.message);
     }
   }
 
   Future<PageCompletedState> loadMore() async {
-    final albumList = await __loadAction?.call(_curPage, _cachedCondition);
-    if (albumList != null) {
-      _curPage++;
-      _cachedList.addAll(albumList);
-      return PageSuccessState(_cachedList, isRefresh: false);
-    } else {
-      return PageFailState(false);
+    try {
+      final albumList = await __loadAction?.call(_curPage, _cachedCondition);
+      if (albumList != null) {
+        _curPage++;
+        _cachedList.addAll(albumList);
+        return PageSuccessState(_cachedList,
+            isRefresh: false, noMoreData: albumList.isEmpty);
+      } else {
+        return PageFailState(false);
+      }
+    } on PageFailException catch (e) {
+      return PageFailState(false, e.message);
     }
   }
+}
+
+class PageFailException implements Exception {
+  String message;
+
+  PageFailException(this.message);
 }

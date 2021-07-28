@@ -19,7 +19,7 @@ class SohuVideoResult {
 @JsonSerializable()
 class SohuVideoData {
   int count;
-  List<SohuVideo> videos;
+  List<SohuVideo>? videos;
 
   SohuVideoData(this.count, this.videos);
 
@@ -38,7 +38,7 @@ class SohuVideo {
   String horHighPic;
   @JsonKey(name: "ver_high_pic")
   String verHighPic;
-  String title;
+  String? title;
   int site;
   int aid;
 

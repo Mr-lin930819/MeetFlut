@@ -9,22 +9,22 @@ import 'package:meet_flut/named_routes.dart';
 ///视频主页
 class VideoMain extends StatelessWidget {
   final List<Menu> _menus = [
-    Menu(Icons.tv, "电视剧", NamedRoutes.VIDEO_COMMON_CHANNEL, args: {
+    Menu(Icons.tv, "电视剧", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("电视剧", VideoChannel.SOHU_CHANNELID_SERIES)
     }),
-    Menu(Icons.movie, "电影", NamedRoutes.VIDEO_COMMON_CHANNEL, args: {
+    Menu(Icons.movie, "电影", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("电影", VideoChannel.SOHU_CHANNELID_MOVIE)
     }),
-    Menu(Icons.child_care, "动漫", NamedRoutes.VIDEO_COMMON_CHANNEL, args: {
+    Menu(Icons.child_care, "动漫", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("动漫", VideoChannel.SOHU_CHANNELID_COMIC)
     }),
-    Menu(Icons.scanner, "纪录片", NamedRoutes.VIDEO_COMMON_CHANNEL, args: {
+    Menu(Icons.scanner, "纪录片", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("纪录片", VideoChannel.SOHU_CHANNELID_DOCUMENTRY)
     }),
-    Menu(Icons.music_note, "音乐", NamedRoutes.VIDEO_COMMON_CHANNEL, args: {
+    Menu(Icons.music_note, "音乐", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("音乐", VideoChannel.SOHU_CHANNELID_MUSIC)
     }),
-    Menu(Icons.toys, "综艺", NamedRoutes.VIDEO_COMMON_CHANNEL, args: {
+    Menu(Icons.toys, "综艺", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("综艺", VideoChannel.SOHU_CHANNELID_VARIETY)
     }),
     Menu(Icons.live_tv, "直播", NamedRoutes.VIDEO_LIVE),

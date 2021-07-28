@@ -24,8 +24,8 @@ Map<String, dynamic> _$SohuVideoResultToJson(SohuVideoResult instance) =>
 SohuVideoData _$SohuVideoDataFromJson(Map<String, dynamic> json) {
   return SohuVideoData(
     json['count'] as int,
-    (json['videos'] as List<dynamic>)
-        .map((e) => SohuVideo.fromJson(e as Map<String, dynamic>))
+    (json['videos'] as List<dynamic>?)
+        ?.map((e) => SohuVideo.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
@@ -42,7 +42,7 @@ SohuVideo _$SohuVideoFromJson(Map<String, dynamic> json) {
     json['video_name'] as String,
     json['hor_high_pic'] as String,
     json['ver_high_pic'] as String,
-    json['title'] as String,
+    json['title'] as String?,
     json['site'] as int,
     json['aid'] as int,
   );

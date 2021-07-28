@@ -44,8 +44,7 @@ class SohuChannelBloc extends Bloc<SohuChannelEvent, SohuChannelState> {
           await _sohuClient.getChannelAlbum(channelId, page, _PAGE_SIZE);
       return result.data.albumList;
     } on DioError catch (dioError) {
-      print(dioError.message);
-      return null;
+      throw PageFailException(dioError.message);
     }
   }
 }

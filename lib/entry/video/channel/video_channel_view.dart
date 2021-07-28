@@ -6,16 +6,17 @@ import 'package:get_it/get_it.dart';
 import 'package:meet_flut/entities/sohu_album_result.dart';
 import 'package:meet_flut/entities/video_channel.dart';
 import 'package:meet_flut/entry/page/page_state.dart';
-import 'package:meet_flut/entry/video/sohu_channel_bloc.dart';
+import 'package:meet_flut/entry/video/channel/sohu_channel_bloc.dart';
+import 'package:meet_flut/named_routes.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class VideoCommonChannel extends StatelessWidget {
+class VideoChannelView extends StatelessWidget {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: true);
   final SohuChannelBloc _channelBloc = GetIt.I.get();
   final VideoChannel? _videoChannel;
 
-  VideoCommonChannel([this._videoChannel]);
+  VideoChannelView([this._videoChannel]);
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +36,10 @@ class VideoCommonChannel extends StatelessWidget {
           enablePullUp: true,
           enablePullDown: true,
           header: ClassicHeader(),
-          onRefresh: () => _channelBloc
-              .add(SohuChannelRefreshEvent(_videoChannel?.channelId.toString() ?? "")),
+          onRefresh: () => _channelBloc.add(SohuChannelRefreshEvent(
+              _videoChannel?.channelId.toString() ?? "")),
           onLoading: () => _channelBloc.add(SohuChannelLoadMoreEvent()),
-          child: _buildChannelView(state),
+          child: _buildChannelView(context, state),
         ),
         bloc: _channelBloc,
       ),
@@ -46,20 +47,20 @@ class VideoCommonChannel extends StatelessWidget {
   }
 
   //频道页界面
-  Widget _buildChannelView(SohuChannelState state) {
+  Widget _buildChannelView(BuildContext context, SohuChannelState state) {
     if (state is SohuChannelInitial) {
       return Center(
         child: Text("无数据"),
       );
     } else if (state is SohuChannelCompleted) {
-      return _buildChannelsContent(state.pageState);
+      return _buildChannelsContent(context, state.pageState);
     } else {
       return Text('');
     }
   }
 
   //构建频道内容
-  Widget _buildChannelsContent(PageCompletedState state) {
+  Widget _buildChannelsContent(BuildContext context, PageCompletedState state) {
     if (state is PageSuccessState<SohuAlbum>) {
       final albumList = state.list;
       return GridView.builder(
@@ -67,33 +68,39 @@ class VideoCommonChannel extends StatelessWidget {
             crossAxisCount: 3, childAspectRatio: 3.0 / 4.0),
         itemBuilder: (_, index) {
           final album = albumList[index];
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image(
-                      image: CachedNetworkImageProvider(album.verHighPic ?? ""),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        album.tvDesc ?? "",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white, fontSize: 12),
+          return GestureDetector(
+            onTap: () => Navigator.pushNamed(
+                context, NamedRoutes.VIDEO_ALBUM_DETAIL,
+                arguments: {'album': album}),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image(
+                        image:
+                            CachedNetworkImageProvider(album.verHighPic ?? ""),
                       ),
-                    )
-                  ],
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          album.tvDesc ?? "",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                album.albumName ?? "",
-              ),
-            ],
+                Text(
+                  album.albumName ?? "",
+                ),
+              ],
+            ),
           );
         },
         itemCount: albumList.length,

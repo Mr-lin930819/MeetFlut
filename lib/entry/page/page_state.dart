@@ -16,7 +16,10 @@ class PageSuccessState<T> extends PageCompletedState {
 }
 
 class PageFailState extends PageCompletedState {
-  PageFailState(bool isRefresh) : super(isRefresh);
+  String? _failMsg;
+  PageFailState(bool isRefresh, [this._failMsg]) : super(isRefresh);
+
+  String get failMsg => _failMsg ?? "";
 }
 
 extension RefreshControllerEx on RefreshController {
@@ -37,7 +40,7 @@ extension RefreshControllerEx on RefreshController {
       }
       if (newState.isRefresh) {
         refreshCompleted();
-      } else {
+      } else if (!newState.noMoreData) {
         loadComplete();
       }
     }
