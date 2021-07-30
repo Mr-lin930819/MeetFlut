@@ -8,6 +8,7 @@ import 'package:meet_flut/entry/video/channel/video_channel_view.dart';
 import 'package:meet_flut/entry/video/album/video_album_detail.dart';
 import 'package:meet_flut/entry/video/video_first_guide.dart';
 import 'package:meet_flut/entry/video/video_main.dart';
+import 'package:meet_flut/entry/video/video_play_view.dart';
 import 'package:meet_flut/named_routes.dart';
 import 'package:meet_flut/pages/code_lab_page.dart';
 import 'package:meet_flut/pages/photo_page.dart';
@@ -57,6 +58,9 @@ class MyApp extends StatelessWidget {
           VideoChannelView(args['channel']),
       NamedRoutes.VIDEO_ALBUM_DETAIL: (_, {args}) =>
           VideoAlbumDetail(args['album']),
+      NamedRoutes.VIDEO_COMMON_CHANNEL: (_, {args}) =>
+          VideoCommonChannel(args['channel']),
+      NamedRoutes.VIDEO_LIVE: (_, {args}) => VideoPlayView(),
     };
     return MaterialApp(
       title: 'Startup Name Generator',

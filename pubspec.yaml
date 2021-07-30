@@ -49,6 +49,9 @@ dependencies:
   cached_network_image: ^3.1.0
   # uuid
   uuid: 3.0.4
+  # 视频播放
+  chewie: ^1.2.2
+  video_player: ^2.1.12
 
 dev_dependencies:
   flutter_test:
