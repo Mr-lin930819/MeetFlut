@@ -10,3 +10,10 @@ class SohuAlbumVideoRefresh extends SohuAlbumDetailEvent {
 }
 
 class SohuAlbumVideoLoadMore extends SohuAlbumDetailEvent {}
+
+class SohuAlbumGetVideoUrl extends SohuAlbumDetailEvent {
+  int albumId;
+  int videoId;
+
+  SohuAlbumGetVideoUrl(this.albumId, this.videoId);
+}

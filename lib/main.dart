@@ -58,9 +58,7 @@ class MyApp extends StatelessWidget {
           VideoChannelView(args['channel']),
       NamedRoutes.VIDEO_ALBUM_DETAIL: (_, {args}) =>
           VideoAlbumDetail(args['album']),
-      NamedRoutes.VIDEO_COMMON_CHANNEL: (_, {args}) =>
-          VideoCommonChannel(args['channel']),
-      NamedRoutes.VIDEO_LIVE: (_, {args}) => VideoPlayView(),
+      NamedRoutes.VIDEO_PLAYER: (_, {args}) => VideoPlayView(args['videoUrl']),
     };
     return MaterialApp(
       title: 'Startup Name Generator',

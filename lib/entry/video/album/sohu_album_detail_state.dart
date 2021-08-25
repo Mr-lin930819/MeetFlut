@@ -10,3 +10,9 @@ class SohuVideosLoadFinished extends SohuAlbumDetailState {
 
   SohuVideosLoadFinished(this.pageState);
 }
+
+class SohuJumpToVideoPlay extends SohuAlbumDetailState {
+  SohuVideoUrlData urlData;
+
+  SohuJumpToVideoPlay(this.urlData);
+}

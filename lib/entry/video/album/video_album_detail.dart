@@ -7,6 +7,7 @@ import 'package:meet_flut/entities/sohu_album_result.dart';
 import 'package:meet_flut/entities/sohu_video_result.dart';
 import 'package:meet_flut/entry/page/page_state.dart';
 import 'package:meet_flut/entry/video/album/sohu_album_detail_bloc.dart';
+import 'package:meet_flut/named_routes.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class VideoAlbumDetail extends StatelessWidget {
@@ -34,6 +35,12 @@ class VideoAlbumDetail extends StatelessWidget {
                   if (newState is SohuVideosLoadFinished) {
                     return _videosRefreshController.handlePageState(newState.pageState);
                   }
+                  if (newState is SohuJumpToVideoPlay) {
+                    Navigator.pushNamed(context, NamedRoutes.VIDEO_PLAYER, arguments: {
+                      'videoUrl': newState.urlData.normalUrl
+                    });
+                    return false;
+                  }
                   return true;
                 },
                 builder: (context, state) => SmartRefresher(
@@ -43,7 +50,7 @@ class VideoAlbumDetail extends StatelessWidget {
                   onRefresh: () => _albumDetailBloc
                       .add(SohuAlbumVideoRefresh(_album.albumId ?? 0)),
                   onLoading: () => _albumDetailBloc.add(SohuAlbumVideoLoadMore()),
-                  child: _buildVideoList(state),
+                  child: _buildVideoList(context, state),
                 ),
                 bloc: _albumDetailBloc,
               ),
@@ -52,15 +59,15 @@ class VideoAlbumDetail extends StatelessWidget {
         ),
       );
 
-  Widget _buildVideoList(SohuAlbumDetailState state) {
+  Widget _buildVideoList(BuildContext context, SohuAlbumDetailState state) {
     if (state is SohuVideosLoadFinished) {
-      return _buildVideoListContent(state.pageState);
+      return _buildVideoListContent(context, state.pageState);
     } else {
       return Center(child: Text('无数据'));
     }
   }
 
-  Widget _buildVideoListContent(PageCompletedState pageState) {
+  Widget _buildVideoListContent(BuildContext context, PageCompletedState pageState) {
     if (pageState is PageSuccessState<SohuVideo>) {
       final videoList = pageState.list;
       return ListView.separated(
@@ -68,6 +75,7 @@ class VideoAlbumDetail extends StatelessWidget {
             SohuVideo video = videoList[index];
             return ListTile(
               title: Text(video.videoName),
+              onTap: () => _albumDetailBloc.add(SohuAlbumGetVideoUrl(video.aid, video.vid)),
             );
           },
           separatorBuilder: (_, __) => Divider(),

@@ -27,7 +27,9 @@ class VideoMain extends StatelessWidget {
     Menu(Icons.toys, "综艺", NamedRoutes.VIDEO_CHANNEL_LIST, args: {
       'channel': VideoChannel("综艺", VideoChannel.SOHU_CHANNELID_VARIETY)
     }),
-    Menu(Icons.live_tv, "直播", NamedRoutes.VIDEO_LIVE),
+    Menu(Icons.live_tv, "直播", NamedRoutes.VIDEO_PLAYER, args: {
+      'video': 'http://hot.vrs.sohu.com/ipad3669271_4603585256668_6870592.m3u8?plat=6uid=f5dbc7b40dad477c8516885f6c681c01&pt=5&prod=app&pg=1'
+    }),
     Menu(Icons.favorite, "收藏", NamedRoutes.VIDEO_FAVORITE),
     Menu(Icons.history, "历史记录", NamedRoutes.VIDEO_HISTORY),
   ];

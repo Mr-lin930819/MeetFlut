@@ -4,19 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayView extends StatefulWidget {
+  final String videoUrl;
+
+  VideoPlayView(this.videoUrl);
+
   @override
   State<StatefulWidget> createState() => _VideoPlayState();
 }
 
 class _VideoPlayState extends State<VideoPlayView> {
-  VideoPlayerController _videoPlayerController =
-      VideoPlayerController.network('http://hot.vrs.sohu.com/ipad3669271_4603585256668_6870592.m3u8?plat=6uid=f5dbc7b40dad477c8516885f6c681c01&pt=5&prod=app&pg=1');
+  late VideoPlayerController _videoPlayerController;
   late ChewieController _chewieController;
 
   @override
   void initState() {
     super.initState();
-    _videoPlayerController.initialize();
+    _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
     _chewieController = ChewieController(
         videoPlayerController: _videoPlayerController, autoPlay: true);
   }

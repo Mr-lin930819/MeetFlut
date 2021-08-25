@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meet_flut/datasource/sohu_client.dart';
 import 'package:meet_flut/entities/sohu_video_result.dart';
+import 'package:meet_flut/entities/sohu_video_url_result.dart';
 import 'package:meet_flut/entry/page/page_handler.dart';
 import 'package:meet_flut/entry/page/page_state.dart';
 import 'package:meta/meta.dart';
@@ -33,6 +34,8 @@ class SohuAlbumDetailBloc
       yield SohuVideosLoadFinished(await _pageHandler.refresh(event.albumId));
     } else if (event is SohuAlbumVideoLoadMore) {
       yield SohuVideosLoadFinished(await _pageHandler.loadMore());
+    } else if (event is SohuAlbumGetVideoUrl) {
+      yield SohuJumpToVideoPlay(await _getVideoUrl(event.albumId, event.videoId));
     }
   }
 
@@ -44,5 +47,10 @@ class SohuAlbumDetailBloc
     } on DioError catch (dioError) {
       throw PageFailException(dioError.message);
     }
+  }
+
+  Future<SohuVideoUrlData> _getVideoUrl(int aid, int vid) async {
+    SohuVideoUrlResult result = await _sohuClient.getVideoPlayUrl(vid, aid);
+    return result.data;
   }
 }
