@@ -97,49 +97,67 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (context) => _HomePage());
       },
       // home: MyHomePage(title: "相册"),
-      home: _HomePage(),
+      home: Scaffold(
+        appBar: AppBar(title: Text("MeetFlut"), centerTitle: true,),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: _HomePage(),
+        ),
+      ),
     );
   }
 }
 
 class _HomePage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-        child: GridView.builder(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-            itemCount: _menus.length,
-            itemBuilder: (context, index) {
-              final menu = _menus[index];
-              return GestureDetector(
-                onTap: () => Navigator.pushNamed(context, menu.pageName),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Icon(
+  Widget build(BuildContext context) => GridView.builder(
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, childAspectRatio: 1.25),
+      itemCount: _menus.length,
+      itemBuilder: (context, index) {
+        final menu = _menus[index];
+        return GestureDetector(
+          onTap: () => Navigator.pushNamed(context, menu.pageName),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).primaryColor),
+                    padding: EdgeInsets.all(8),
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) => Icon(
                         menu.icon,
                         color: Colors.white,
-                        size: 72,
+                        size: constraints.maxHeight
                       ),
-                      Text(
-                        menu.name,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      )
-                    ],
+                    ),
                   ),
                 ),
-              );
-            }),
-      );
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    menu.name,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      });
 }
 
 List<Menu> _menus = [
   Menu(Icons.shop, "Demo", NamedRoutes.SALE),
-  Menu(Icons.photo, "Demo2", NamedRoutes.PHOTO),
+  Menu(Icons.photo, "SimpleDemo", NamedRoutes.PHOTO),
   Menu(Icons.code, "CodeLab", NamedRoutes.CODE),
-  Menu(Icons.videocam, "视频", NamedRoutes.VIDEO),
+  Menu(Icons.videocam, "搜狐视频", NamedRoutes.VIDEO),
   Menu(Icons.show_chart, "图表", NamedRoutes.CHARTS),
 ];
 

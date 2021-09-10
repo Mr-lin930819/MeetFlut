@@ -6,14 +6,16 @@ import 'package:meet_flut/gen/assets.gen.dart';
 class PhotoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.all(0.0),
-      children: <Widget>[
-        buildImage(),
-        buildTitle(context),
-        buildButtons(context),
-        buildText()
-      ],
+    return Material(
+      child: ListView(
+        padding: EdgeInsets.all(0.0),
+        children: <Widget>[
+          buildImage(),
+          buildTitle(context),
+          buildButtons(context),
+          buildText()
+        ],
+      ),
     );
   }
 
